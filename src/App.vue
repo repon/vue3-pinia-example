@@ -1,31 +1,34 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import { storeToRefs } from "pinia";
+import HelloPinia from "./components/HelloPinia.vue";
+import { useStoreCounter } from "./stores/counter";
+const counter = useStoreCounter()
+const { count, doubleCount, user } = storeToRefs(counter)
+const { increment } = counter
+
+const replace = () => {
+  counter.$state = {
+    count: 100,
+    count2: 500,
+    user: {
+      name: 'abe takeshi'
+    }
+  }
+}
 </script>
 
 <template>
+  <h1>Pinia入門</h1>
+  <p>Count:{{ count }}</p>
+  <p>DoubleCount: {{ doubleCount }}</p>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <button @click="increment">Up</button>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloPinia />
+  <div>{{ user.name }}</div>
+  <button @click="replace">Replace</button>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>
